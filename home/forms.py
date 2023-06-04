@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import ContactUs
+from .models import ContactUs, CateringBook, EventBook
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
@@ -54,39 +54,72 @@ class ContactForm(ModelForm):
         }
 
 
-class CateringForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
-    phone = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Phone'}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+class CateringForm(forms.ModelForm):
+    class Meta:
+        model = CateringBook
+        fields = ('full_name', 'email', 'phone')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column('name', css_class='col-md-6'),
-                Column('phone', css_class='col-md-6'),
-                Column('email', css_class='col-12'),
-                css_class='row g-3'
-            ),
-            Submit('submit', 'Sign in')
-        )
+        labels= {
+            'full_name':'Full Name:',
+            'phone':'Phone:',
+            'email':'Email:',
+        }
+
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
+            'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
+            'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+        }
+    # name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
+    # phone = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Phone'}))
+    # email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.layout = Layout(
+    #         Row(
+    #             Column('name', css_class='col-md-6'),
+    #             Column('phone', css_class='col-md-6'),
+    #             Column('email', css_class='col-12'),
+    #             css_class='row g-3'
+    #         ),
+    #         Submit('submit', 'Sign in')
+    #     )
 
 
-class EventManagementForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
-    phone = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Phone'}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+class EventManagementForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column('name', css_class='col-md-6'),
-                Column('phone', css_class='col-md-6'),
-                Column('email', css_class='col-12'),
-                css_class='row g-3'
-            ),
-            Submit('submit', 'Sign in')
-        )
+    class Meta:
+        model = EventBook
+        fields = ('full_name', 'email', 'phone')
+
+        labels= {
+            'full_name':'Full Name:',
+            'phone':'Phone:',
+            'email':'Email:',
+        }
+
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
+            'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
+            'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+        }
+
+class CheckoutForm(forms.ModelForm):
+
+     class Meta:
+        model = EventBook
+        fields = ('full_name', 'email', 'phone')
+
+        labels= {
+            'full_name':'Full Name:',
+            'phone':'Phone:',
+            'email':'Email:',
+        }
+
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
+            'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
+            'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+        }

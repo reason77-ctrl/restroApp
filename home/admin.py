@@ -37,10 +37,16 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Review, ReviewAdmin)
 
 
-class BookingFormAdmin(admin.ModelAdmin):
+class CateringBookAdmin(admin.ModelAdmin):
     list_display = ['full_name','email','phone','date_field']
 
-admin.site.register(BookingForm, BookingFormAdmin)
+admin.site.register(CateringBook, CateringBookAdmin)
+
+
+class EventBookAdmin(admin.ModelAdmin):
+    list_display = ['full_name','email','phone','date_field']
+
+admin.site.register(EventBook, EventBookAdmin)
 
 
 class TableBookFormAdmin(admin.ModelAdmin):
@@ -59,3 +65,9 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ['id', 'username','items','date_field']
 
 admin.site.register(Cart, CartAdmin)
+
+
+# class CheckoutAdmin(admin.ModelAdmin):
+#     list_display = ['full_name','email','phone','date_field']
+
+# admin.site.register(CheckoutAdmin)

@@ -3,7 +3,7 @@ from django.views.generic.base import View
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, ContactForm, CateringForm, EventManagementForm
+from .forms import SignUpForm, ContactForm, CateringForm, EventManagementForm, CheckoutForm
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.db.models import Q
@@ -88,6 +88,7 @@ class GalleryView(View):
         return render(request, 'gallery.html', context)
 
 
+
 class CateringView(View):
 
     def get(self,request):
@@ -103,6 +104,17 @@ class CateringView(View):
 
         return render(request, 'catering.html', context)
     
+    def post(self,request):
+        form = CateringForm()
+        if request.method == 'POST':
+            form = CateringForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Message has been sent!!')
+                form.cleaned_data
+                return redirect('home:catering')
+        return render(request,'catering.html',{'form':form})
+
 
 class EventMgmtView(View):
 
@@ -119,7 +131,19 @@ class EventMgmtView(View):
 
         return render(request, 'eventMgmt.html', context)
     
-    
+    def post(self,request):
+        form = EventManagementForm()
+        if request.method == 'POST':
+            form = EventManagementForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Message has been sent!!')
+                form.cleaned_data
+                return redirect('home:event-manage')
+        return render(request,'eventMgmt.html',{'form':form})
+
+
+
 class ContactUsView(View):
 
     def get(self,request):
@@ -145,6 +169,7 @@ class ContactUsView(View):
                 return redirect('home:contact-us')
         return render(request,'contact.html',{'form':form})
     
+
 
 class CartView(View):
 
@@ -212,10 +237,30 @@ def delete_cart(request):
     return redirect('home:cart')
 
 
+
 class CheckoutView(View):
 
     def get(self,request):
-        return render(request, 'checkout.html')
+        form = CheckoutForm()
+        username = request.user.username
+        total_cart_item = 0
+        total_cart_item = len(Cart.objects.filter(username=username))
+        context = {
+            'form':form,
+            'total_cart_item':total_cart_item,
+        }
+        return render(request, 'checkout.html', context)
+
+    def post(self,request):
+        form = CheckoutForm()
+        if request.method == 'POST':
+            form = CheckoutForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Message has been sent!!')
+                form.cleaned_data
+                return redirect('home:checkout')
+        return render(request,'checkout.html',{'form':form})
 
 
 def login_user(request):

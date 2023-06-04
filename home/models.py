@@ -77,7 +77,7 @@ class Review(models.Model):
         return self.full_name
 
 
-class BookingForm(models.Model):
+class CateringBook(models.Model):
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=150)
@@ -85,6 +85,18 @@ class BookingForm(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+
+class EventBook(models.Model):
+    full_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    email = models.EmailField(max_length=150)
+    date_field = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.full_name
+
 
 
 class TableBookForm(models.Model):

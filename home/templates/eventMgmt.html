@@ -11,8 +11,24 @@
             </h2>
         </div>
         <div class="row layout_padding">
-            {% crispy form %}
-            
+            <form class="row g-3 needs-validation" method="POST" action="" novalidate>
+            {% csrf_token %}
+            <div class="col-md-6">
+                    {{form.full_name|as_crispy_field }}
+                    
+                    {% comment %} <input type="email" class="form-control" id="inputEmail4"> {% endcomment %}
+                </div>
+                <div class="col-md-6">
+                    {{form.phone|as_crispy_field}}
+                </div>
+                <div class="col-12">
+                    {{form.email|as_crispy_field}}
+                </div>
+        
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success">Send Message</button>
+                </div>
+            </form>
         </div>
     </div>
 </section>
