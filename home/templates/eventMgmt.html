@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<section class="layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+              Event Management
+            </h2>
+        </div>
+        <div class="row layout_padding">
+            {% crispy form %}
+            
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

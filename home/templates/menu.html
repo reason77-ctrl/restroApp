@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+  <!-- food section -->
+
+  <section class="food_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Our Menu
+        </h2>
+      </div>
+
+      <ul class="filters_menu">
+        <li class="active" data-filter="*">All</li>
+        {% for category in categories %}
+        <li data-filter=".category{{category.id}}">{{category.cat_name}}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="filters-content">
+        <div class="row grid">
+          {% for item in items %}
+          <div class="col-sm-6 col-lg-4 all category{{item.category_id}}">
+            <div class="box">
+              <div>
+                <div class="img-box">
+                  <img src="{{item.item_image.url}}" alt="">
+                </div>
+                <div class="detail-box">
+                  <h5>
+                    {{item.item_name}}
+                  </h5>
+                  <p>
+                    {{item.item_description}}
+                  </p>
+                  <div class="options">
+                    <h6>
+                      ${{item.price}}
+                    </h6>
+                    {% if item.id in item_already_in_cart %}
+                    
+                    <a class="btn btn-warning shadow" href="{%url 'home:cart' %}"><i class="fa fa-check"></i></a>
+                    
+                    {% else %}
+
+                    <form action="{% url 'home:add_to_cart' %}" method="POST">
+                      {% csrf_token %}
+                      <input hidden type="text" name="food_id" value="{{item.id}}">
+                      <button type="submit" class="btn btn-warning"><i class="fa fa-shopping-cart"></i></button>
+                    </form>
+
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mt-5">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            {% if items.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{items.previous_page_number }}" tabindex="-1">Previous</a></li>
+            {% endif %}
+
+            {% for num in totalPageList %}
+            {% if items.number == num %}
+            <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{num}}">{{num}}<span class="sr-only">(current)</span></a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if items.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{items.next_page_number}}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{items.paginator.num_pages}}">Last &raquo;</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- end food section -->
+  {% endblock %}

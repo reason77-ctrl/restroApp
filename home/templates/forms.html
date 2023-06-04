@@ -1,0 +1,69 @@
+{% load static %}
+
+{% block content %}
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button> -->
+
+<!-- Modal -->
+{% comment %} <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form action="{% url 'home:bookEvent' %}" method= POST class="row g-3">
+                        {% csrf_token %}
+                     
+                        <div class="col-md-6">
+                            <label for="inputFirstName" class="form-label">First Name</label>
+                            <input name="first_name" type="text" class="form-control" id="inputFirstName" placeholder="John">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputLastName" class="form-label">Last Name</label>
+                            <input name="last_name" type="text" class="form-control" id="inputLastName" placeholder="Doe">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Email</label>
+                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPhone" class="form-label">Phone</label>
+                            <input name="phone" type="number" class="form-control" id="inputPhone">
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Address</label>
+                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">City</label>
+                            <input name="city" type="text" class="form-control" id="inputCity">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputState" class="form-label">State</label>
+                            <input name="state" type="text" class="form-control" id="inputState">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="inputZip" class="form-label">Zip</label>
+                            <input name="zip_code" type="text" class="form-control" id="inputZip">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+
+{% endblock %}
