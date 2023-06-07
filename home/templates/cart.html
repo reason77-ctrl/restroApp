@@ -12,6 +12,11 @@
           <div class="card-header py-3">
             <h5 class="mb-0">Cart - {{total_cart_item}} items</h5>
           </div>
+          {% if total_cart_item == 0 %}
+          <div class="card-body">
+          <p><strong>Currently No Items In Cart</strong></P>
+          </div>
+          {% else %}
           <div class="card-body">
             <!-- Single item -->
             {% for each in carts %}
@@ -32,6 +37,7 @@
                 <!-- Data -->
                 <p><strong>{{each.items.item_name}}</strong></p>
                 <p>Category: {{each.items.category}}</p>
+                <p>Price: <strong>$</strong> {{each.items.price}}</p>
 
                 <form action="{% url 'home:delete_cart' %}">
                   {% csrf_token %}
@@ -71,7 +77,7 @@
                 <!-- Quantity -->
 
                 <!-- Price -->
-                <p><strong>$</strong><input class="text-start text-md-center form-control" type="text" name="total_price" value="{{each.price}}" disabled></p>
+                <p><strong>$ </strong>Total:<input class="text-start text-md-center form-control" type="text" name="total_price" value="{{each.price}}" disabled></p>
                 </form>
                 {% comment %} <p class="text-start text-md-center">
                   <strong>${{each.items.price}}</strong>
@@ -85,11 +91,12 @@
             {% endfor %}
             <!-- Single item -->
           </div>
+          {% endif %}
         </div>
         <div class="card mb-4">
           <div class="card-body">
-            <p><strong>Expected shipping delivery</strong></p>
-            <p class="mb-0">12.10.2020 - 14.10.2020</p>
+            <p><strong>Expected delivery</strong></p>
+            <p class="mb-0">Within an Hour</p>
           </div>
         </div>
         <div class="card mb-4 mb-lg-0">
@@ -119,7 +126,7 @@
             <ul class="list-group list-group-flush">
               <li
                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                Total:
+                All Total:
                 <span><strong>$ </strong>{{all_total}}</span>
               </li>
               {% comment %} <li class="list-group-item d-flex justify-content-between align-items-center px-0">
@@ -129,7 +136,7 @@
               <li
                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                 <div>
-                  <strong>Total amount</strong>
+                  <strong>Grand Total amount</strong>
                   <strong>
                     <p class="mb-0">(including VAT)</p>
                   </strong>
@@ -138,9 +145,9 @@
               </li>
             </ul>
 
-            <a href="{% url 'home:checkout' %}"><button type="button" class="btn btn-primary btn-lg btn-block">
+            <button type="button" class="btn btn-primary btn-lg btn-block" data-bs-toggle="modal" data-bs-target="#checkoutForm">
               Go to checkout
-            </button></a>
+            </button>
           </div>
         </div>
       </div>
@@ -150,5 +157,60 @@
 
 <!-- onclick="this.parentNode.querySelector('input[type=number]').stepDown()" -->
 <!-- onclick="this.parentNode.querySelector('input[type=n]').stepUp()"> -->
+
+<div class="modal fade" id="checkoutForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">CHECKOUT</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form action="{% url 'home:checkout' %}" method= "POST" class="row g-3">
+                        {% csrf_token %}
+                     
+                        <div class="col-12">
+                            <label for="inputFirstName" class="form-label">Full Name</label>
+                            <input name="full_name" type="text" class="form-control" id="inputFirstName" placeholder="John Doe">
+                        </div>
+                        <div class="col-md-8">
+                            <label for="inputEmail4" class="form-label">Email</label>
+                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputPhone" class="form-label">Phone</label>
+                            <input name="phone" type="number" class="form-control" id="inputPhone">
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">Address</label>
+                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">City</label>
+                            <input name="city" type="text" class="form-control" id="inputCity">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputState" class="form-label">State</label>
+                            <input name="state" type="text" class="form-control" id="inputState">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="inputZip" class="form-label">Zip</label>
+                            <input name="zip_code" type="text" class="form-control" id="inputZip">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Checkout</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

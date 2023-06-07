@@ -3,7 +3,7 @@ from django.views.generic.base import View
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, ContactForm, CateringForm, EventManagementForm, CheckoutForm
+from .forms import SignUpForm, ContactForm, CateringForm, EventManagementForm
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.db.models import Q
@@ -86,6 +86,19 @@ class GalleryView(View):
             'total_cart_item':total_cart_item,
         }
         return render(request, 'gallery.html', context)
+
+
+class PlacesNearby(View):
+
+    def get(self,request):
+        username = request.user.username
+        total_cart_item = 0
+        total_cart_item = len(Cart.objects.filter(username=username))
+        context = {
+            'nbar':'placesNearby',
+            'total_cart_item':total_cart_item,
+        }
+        return render(request, 'placesNearby.html', context)
 
 
 
@@ -238,29 +251,31 @@ def delete_cart(request):
 
 
 
-class CheckoutView(View):
+def checkout(request):
+    if request.method == 'POST':
+        if request.session.has_key('username'):
+            username = request.session['username']
+            full_name = request.POST.get('full_name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            address = request.POST.get('address')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
+            zip_code = request.POST.get('zip_code')
 
-    def get(self,request):
-        form = CheckoutForm()
-        username = request.user.username
-        total_cart_item = 0
-        total_cart_item = len(Cart.objects.filter(username=username))
-        context = {
-            'form':form,
-            'total_cart_item':total_cart_item,
-        }
-        return render(request, 'checkout.html', context)
+            cart_item = Cart.objects.filter(username=username)
+            for each in cart_item:
+                qty = each.quantity
+                price = each.price
+                item_name = each.items
+                image = each.cart_image
 
-    def post(self,request):
-        form = CheckoutForm()
-        if request.method == 'POST':
-            form = CheckoutForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Message has been sent!!')
-                form.cleaned_data
-                return redirect('home:checkout')
-        return render(request,'checkout.html',{'form':form})
+                OrderDetail(username=username, item_name=item_name, image=image, price=price, qty=qty).save()
+                cart_item.delete()
+
+            return redirect('home:cart')
+        else:
+            return redirect('home:signup')   
 
 
 def login_user(request):

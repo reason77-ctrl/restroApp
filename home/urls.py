@@ -11,11 +11,12 @@ urlpatterns = [
     path('event-manage/', EventMgmtView.as_view(), name = 'event-manage'),
     path('contact-us/', ContactUsView.as_view(), name = 'contact-us'),
     path('cart/', CartView.as_view(), name = 'cart'),
-    path('checkout/', CheckoutView.as_view(), name = 'checkout'),
+    path('places_nearby/', PlacesNearby.as_view(), name = 'places_nearby'),
 
     path('cart_item_quantity/', cart_item_quantity, name = 'cart_item_quantity'),
     path('delete_cart/', delete_cart, name = 'delete_cart'),
     path('add_to_cart/', add_to_cart, name='add_to_cart'),
+    path('checkout/', checkout, name = 'checkout'),
     
     path('login-user/', login_user, name='login-user'),
     path('logout-user/', logout_user, name='logout-user'),

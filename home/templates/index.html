@@ -146,6 +146,9 @@
               <li class="nav-item {% if nbar == 'gallery' %} active {% endif %}">
                 <a class="nav-link" href="{% url 'home:gallery' %}">Gallery</a>
               </li>
+              <li class="nav-item {% if nbar == 'placesNearby' %} active {% endif %}">
+                <a class="nav-link" href="{% url 'home:places_nearby' %}">Places Nearby</a>
+              </li>
               <li class="nav-item {% if nbar == 'contact-us' %} active {% endif %}">
                 <a class="nav-link" href="{% url 'home:contact-us' %}">Contact Us</a>
               </li>
@@ -251,7 +254,7 @@
                       {{slides.description}}
                     </p>
                     <div class="btn-box">
-                      <a href="" class="btn1">
+                      <a href="{% url 'home:catering' %}" class="btn1">
                         Order Now
                       </a>
                     </div>

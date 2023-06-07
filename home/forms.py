@@ -106,20 +106,20 @@ class EventManagementForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
         }
 
-class CheckoutForm(forms.ModelForm):
+# class CheckoutForm(forms.ModelForm):
 
-     class Meta:
-        model = EventBook
-        fields = ('full_name', 'email', 'phone')
+#     class Meta:
+#         model = Checkout
+#         fields = ('full_name', 'email', 'phone')
 
-        labels= {
-            'full_name':'Full Name:',
-            'phone':'Phone:',
-            'email':'Email:',
-        }
+#         labels= {
+#             'full_name':'Full Name:',
+#             'phone':'Phone:',
+#             'email':'Email:',
+#         }
 
-        widgets = {
-            'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
-            'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
-            'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
-        }
+#         widgets = {
+#             'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
+#             'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
+#             'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+#         }

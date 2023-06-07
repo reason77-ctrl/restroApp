@@ -126,7 +126,22 @@ class ContactUs(models.Model):
     
     
 class Gallery(models.Model):
+    title = models.CharField(max_length=100, blank=True)
+    image = models.ImageField(upload_to='media/gallery', blank=True)
+    date_field = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __str__(self):
+        return self.title
+    
+
+class PlacesNearby(models.Model):
     pass
+    # title = models.CharField(max_length=100)
+    # image = models.ImageField(upload_to='media/gallery')
+    # date_field = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    # def __str__(self):
+    #     return self.title
 
 
 class Cart(models.Model):
@@ -139,3 +154,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return self.username
+    
+
+
+class OrderDetail(models.Model):
+    username = models.CharField(max_length=100,default=True)
+    item_name = models.CharField(max_length=100)
+    image = models.ImageField(null=True,blank=True)
+    qty = models.PositiveIntegerField(default=1)
+    price = models.IntegerField()
+    ordered_date = models.DateTimeField(auto_now_add=True)
