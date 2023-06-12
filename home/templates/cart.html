@@ -4,6 +4,13 @@
 
 
 
+  {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
 <section class="h-100 gradient-custom">
   <div class="container py-5">
     <div class="row d-flex justify-content-center my-4">
@@ -39,7 +46,7 @@
                 <p>Category: {{each.items.category}}</p>
                 <p>Price: <strong>$</strong> {{each.items.price}}</p>
 
-                <form action="{% url 'home:delete_cart' %}">
+                <form action="{% url 'home:delete_cart' %}" method="POST">
                   {% csrf_token %}
                   <input hidden type="text" name="cart_id" value="{{each.id}}">
                   <button type="submit" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
@@ -111,9 +118,9 @@
             <img class="me-2" width="45px"
               src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
               alt="Mastercard" />
-            <img class="me-2" width="45px"
+            {% comment %} <img class="me-2" width="45px"
               src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
-              alt="PayPal acceptance mark" />
+              alt="PayPal acceptance mark" /> {% endcomment %}
           </div>
         </div>
       </div>
@@ -144,10 +151,15 @@
                 <span><strong>${{all_total}}</strong></span>
               </li>
             </ul>
-
+            {% if total_cart_item == 0 %}
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+              Go to checkout
+            </button>
+            {% else %}
             <button type="button" class="btn btn-primary btn-lg btn-block" data-bs-toggle="modal" data-bs-target="#checkoutForm">
               Go to checkout
             </button>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -168,36 +180,36 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form action="{% url 'home:checkout' %}" method= "POST" class="row g-3">
+                    <form action="{% url 'home:checkout' %}" method= "POST" class="row g-3 needs-validation">
                         {% csrf_token %}
                      
                         <div class="col-12">
                             <label for="inputFirstName" class="form-label">Full Name</label>
-                            <input name="full_name" type="text" class="form-control" id="inputFirstName" placeholder="John Doe">
+                            <input name="full_name" type="text" class="form-control" id="inputFirstName" placeholder="John Doe" required>
                         </div>
                         <div class="col-md-8">
                             <label for="inputEmail4" class="form-label">Email</label>
-                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com">
+                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com" required>
                         </div>
                         <div class="col-md-4">
                             <label for="inputPhone" class="form-label">Phone</label>
-                            <input name="phone" type="number" class="form-control" id="inputPhone">
+                            <input name="phone" type="number" class="form-control" id="inputPhone" required>
                         </div>
                         <div class="col-12">
                             <label for="inputAddress" class="form-label">Address</label>
-                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputCity" class="form-label">City</label>
-                            <input name="city" type="text" class="form-control" id="inputCity">
+                            <input name="city" type="text" class="form-control" id="inputCity" required>
                         </div>
                         <div class="col-md-4">
                             <label for="inputState" class="form-label">State</label>
-                            <input name="state" type="text" class="form-control" id="inputState">
+                            <input name="state" type="text" class="form-control" id="inputState" required>
                         </div>
                         <div class="col-md-2">
                             <label for="inputZip" class="form-label">Zip</label>
-                            <input name="zip_code" type="text" class="form-control" id="inputZip">
+                            <input name="zip_code" type="text" class="form-control" id="inputZip" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

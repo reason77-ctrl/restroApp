@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from tinymce.widgets import TinyMCE
 
 # Register your models here.
 
@@ -23,11 +24,14 @@ class ItemAdmin(admin.ModelAdmin):
 
 class AboutAdmin(admin.ModelAdmin):
     list_display = ['title','date_field']
+    formfield_overrides = {
+        models.TextField:{'widget':TinyMCE()}
+    }
 
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['full_name','email','phone','date_field']
+    list_display = ['full_name','email','phone','status','date_field']
 
 
 

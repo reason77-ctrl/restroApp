@@ -6,8 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, ContactForm, CateringForm, EventManagementForm
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 class HomeView(View):
@@ -17,7 +21,7 @@ class HomeView(View):
         img_slides = ImageSlider.objects.filter(status = 'active')
         categories = Category.objects.all()
         abouts = About.objects.all()
-        reviews = Review.objects.all()
+        reviews = Review.objects.filter(status = 'active')
         items = Item.objects.all()
         item_already_in_cart = []
         total_cart_item = 0
@@ -80,23 +84,27 @@ class GalleryView(View):
         username = request.user.username
         total_cart_item = 0
         total_cart_item = len(Cart.objects.filter(username=username))
+        gallery = Gallery.objects.all()
 
         context = {
             'nbar':'gallery',
             'total_cart_item':total_cart_item,
+            'gallery':gallery,
         }
         return render(request, 'gallery.html', context)
 
 
-class PlacesNearby(View):
+class PlacesNearbyView(View):
 
     def get(self,request):
         username = request.user.username
         total_cart_item = 0
         total_cart_item = len(Cart.objects.filter(username=username))
+        placesNearby = PlacesNearby.objects.all()
         context = {
             'nbar':'placesNearby',
             'total_cart_item':total_cart_item,
+            'placesNearby':placesNearby,
         }
         return render(request, 'placesNearby.html', context)
 
@@ -122,9 +130,20 @@ class CateringView(View):
         if request.method == 'POST':
             form = CateringForm(request.POST)
             if form.is_valid():
+                full_name = form.cleaned_data["full_name"]
+                email = form.cleaned_data["email"]
+                phone = form.cleaned_data["phone"]
+
+                send_mail(
+                    subject='Catering Order',
+                    message=f"Name: {full_name}\nEmail: {email}\nPhone: {phone}",
+                    from_email=email,
+                    recipient_list=["admin@example.com"],
+                    fail_silently=False,
+                )
                 form.save()
                 messages.success(request, 'Message has been sent!!')
-                form.cleaned_data
+                
                 return redirect('home:catering')
         return render(request,'catering.html',{'form':form})
 
@@ -145,15 +164,25 @@ class EventMgmtView(View):
         return render(request, 'eventMgmt.html', context)
     
     def post(self,request):
-        form = EventManagementForm()
         if request.method == 'POST':
             form = EventManagementForm(request.POST)
             if form.is_valid():
-                form.save()
+                full_name = form.cleaned_data["full_name"]
+                email = form.cleaned_data["email"]
+                phone = form.cleaned_data["phone"]
+
+                send_mail(
+                    subject='Event Management Order',
+                    message=f"Name: {full_name}\nEmail: {email}\nPhone: {phone}",
+                    from_email=email,
+                    recipient_list=["admin@example.com"],
+                    fail_silently=False,
+                )
+                
                 messages.success(request, 'Message has been sent!!')
-                form.cleaned_data
+                form.save()
                 return redirect('home:event-manage')
-        return render(request,'eventMgmt.html',{'form':form})
+        return render(request,'eventMgmt.html')
 
 
 
@@ -172,15 +201,25 @@ class ContactUsView(View):
         return render(request, 'contact.html', context)
     
     def post(self,request):
-        form = ContactForm()
         if request.method == 'POST':
             form = ContactForm(request.POST)
             if form.is_valid():
-                form.save()
+                name = form.cleaned_data["name"]
+                email = form.cleaned_data["email"]
+                phone = form.cleaned_data["phone"]
+                message = form.cleaned_data["message"]
+
+                send_mail(
+                    subject='Contact Form Submission',
+                    message=f"Name: {name}\nEmail: {email}\nPhone: {phone}\nMessage: {message}",
+                    from_email=email,
+                    recipient_list=["admin@example.com"],
+                    fail_silently=False,
+                )
                 messages.success(request, 'Message has been sent!!')
-                form.cleaned_data
+                form.save()
                 return redirect('home:contact-us')
-        return render(request,'contact.html',{'form':form})
+        return render(request,'contact.html')
     
 
 
@@ -243,7 +282,7 @@ def cart_item_quantity(request):
 
 def delete_cart(request):
     username = request.user.username
-    cart_ids = request.GET.get('cart_id')
+    cart_ids = request.POST.get('cart_id')
 
     if Cart.objects.filter(id=cart_ids).exists():
         Cart.objects.filter(username=username, id=cart_ids).delete()
@@ -271,7 +310,8 @@ def checkout(request):
                 image = each.cart_image
 
                 OrderDetail(username=username, item_name=item_name, image=image, price=price, qty=qty).save()
-                cart_item.delete()
+            cart_item.delete()
+            messages.success(request, 'Your order has been sent!!')
 
             return redirect('home:cart')
         else:
@@ -297,22 +337,42 @@ def logout_user(request):
     return redirect('home:index')
 
 
-def register_user(request):
-    form = SignUpForm()
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            # first_name = form.cleaned_data['first_name']
-            # last_name = form.cleaned_data['last_name']
-            # email = form.cleaned_data['email']
+class SignUpView(View):
+    def get(self,request):
+        username = request.user.username
+        form = SignUpForm()
+        total_cart_item = 0
+        total_cart_item = len(Cart.objects.filter(username=username))
 
-            user = authenticate(username=username,password=password)
-            login(request, user)
-            return redirect('home:index')
-    return render(request, "signup.html",{'form':form})
+        context = {
+            'form':form,
+            'total_cart_item':total_cart_item
+        }
+        return render(request,'signup.html', context)
+
+    def post(self,request):
+        if request.method == 'POST':
+            form = SignUpForm(request.POST)
+
+            if form.is_valid():
+                email = request.POST.get('email')
+                
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, 'This email already exist!!')
+                    return redirect('home:signup')
+            
+                else:
+                    form.save()
+                    username = form.cleaned_data['username']
+                    password = form.cleaned_data['password1']
+                    # first_name = form.cleaned_data['first_name']
+                    # last_name = form.cleaned_data['last_name']
+                    # email = form.cleaned_data['email']
+
+                    user = authenticate(username=username,password=password)
+                    login(request, user)
+                    return redirect('home:index')
+        return render(request, "signup.html")
 
 
 
@@ -345,7 +405,7 @@ def book_table_form(request):
         address = request.POST['address']
         city = request.POST['city']
         state = request.POST['state']
-        zip = request.POST['zip']
+        zip_code = request.POST['zip_code']
 
         data = TableBookForm.objects.create(
             first_name = first_name,
@@ -355,8 +415,15 @@ def book_table_form(request):
             address = address,
             city = city,
             state = state,
-            zip = zip,
+            zip_code = zip_code,
         )
         data.save()
+        send_mail(
+            subject='Table Book Form',
+            message=f"First Name: {first_name}\nLast Name: {last_name}\nEmail: {email}\nPhone: {phone}\nAddress: {address}\nCity: {city}\nState: {state}\nZip Code: {zip_code}",
+            from_email=email,
+            recipient_list=["admin@example.com"],
+            fail_silently=False,
+        )
         return redirect('home:index')
     return render(request, 'index.html')

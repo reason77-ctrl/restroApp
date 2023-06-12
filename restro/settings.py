@@ -42,10 +42,15 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'crispy_bootstrap5',
+    'tinymce',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,3 +137,6 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js'
+TINYMCE_COMPRESSOR = False

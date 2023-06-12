@@ -45,45 +45,45 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Book Your Table</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form action="{% url 'home:book-table' %}" method= POST class="row g-3">
+                    <form action="{% url 'home:book-table' %}" method= "POST" class="row g-3">
                         {% csrf_token %}
                      
                         <div class="col-md-6">
                             <label for="inputFirstName" class="form-label">First Name</label>
-                            <input name="first_name" type="text" class="form-control" id="inputFirstName" placeholder="John">
+                            <input name="first_name" type="text" class="form-control" id="inputFirstName" placeholder="John" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputLastName" class="form-label">Last Name</label>
-                            <input name="last_name" type="text" class="form-control" id="inputLastName" placeholder="Doe">
+                            <input name="last_name" type="text" class="form-control" id="inputLastName" placeholder="Doe" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputEmail4" class="form-label">Email</label>
-                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com">
+                            <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="example@mail.com" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputPhone" class="form-label">Phone</label>
-                            <input name="phone" type="number" class="form-control" id="inputPhone">
+                            <input name="phone" type="number" class="form-control" id="inputPhone" required>
                         </div>
                         <div class="col-12">
                             <label for="inputAddress" class="form-label">Address</label>
-                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                            <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputCity" class="form-label">City</label>
-                            <input name="city" type="text" class="form-control" id="inputCity">
+                            <input name="city" type="text" class="form-control" id="inputCity" required>
                         </div>
                         <div class="col-md-4">
                             <label for="inputState" class="form-label">State</label>
-                            <input name="state" type="text" class="form-control" id="inputState">
+                            <input name="state" type="text" class="form-control" id="inputState" required>
                         </div>
                         <div class="col-md-2">
                             <label for="inputZip" class="form-label">Zip</label>
-                            <input name="zip" type="text" class="form-control" id="inputZip">
+                            <input name="zip_code" type="text" class="form-control" id="inputZip" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

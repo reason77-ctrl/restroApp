@@ -3,11 +3,19 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+
+
 <section class="layout_padding">
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-              Catering Management
+              Catering Event Order Form
             </h2>
         </div>
         <div class="layout_padding">
@@ -23,6 +31,30 @@
                 </div>
                 <div class="col-12">
                     {{form.email|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.event_date|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.event_time|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.event_address|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.time_of_arrival|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.food_served|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.estimated_no_of_guest|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.event_name|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{form.event_theme|as_crispy_field}}
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-success">Send Message</button>

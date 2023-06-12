@@ -24,6 +24,7 @@ class SignUpForm(UserCreationForm):
         self.fields['username'].label = ''
         # self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 100 characters or fewer. Letters, digits and @/./+/_ only.</small></span>'
 
+
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
         self.fields['password1'].label = ''
@@ -54,21 +55,45 @@ class ContactForm(ModelForm):
         }
 
 
+class DateInput(forms.DateTimeInput):
+    input_type = 'date'
+
+
+class TimeInput(forms.TimeInput):
+    input_type = 'time'
+
+
 class CateringForm(forms.ModelForm):
     class Meta:
         model = CateringBook
-        fields = ('full_name', 'email', 'phone')
+        fields = ('full_name', 'email', 'phone','event_date','event_time','event_address','time_of_arrival','food_served','estimated_no_of_guest','event_name','event_theme')
 
         labels= {
             'full_name':'Full Name:',
             'phone':'Phone:',
             'email':'Email:',
+            'event_date':'Event Date:',
+            'event_time':'Event Time:',
+            'event_address': 'Event Address:',
+            'time_of_arrival': 'Time of Arrival:',
+            'food_served': 'Time the Food will be served:',
+            'estimated_no_of_guest': 'Estimated No. of Guests:',
+            'event_name': 'Event Name:',
+            'event_theme': 'Event Theme:',
         }
 
         widgets = {
             'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
             'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
             'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+            'event_date': DateInput(attrs={'class':'form-control'}),
+            'event_time': TimeInput(attrs={'class':'form-control'}),
+            'event_address': forms.TextInput(attrs={'class':'form-control','placeholder':'Address'}),
+            'time_of_arrival': TimeInput(attrs={'class':'form-control'}),
+            'food_served': TimeInput(attrs={'class':'form-control'}),
+            'estimated_no_of_guest': forms.NumberInput(attrs={'class':'form-control','placeholder':'No.of Guests'}),
+            'event_name': forms.TextInput(attrs={'class':'form-control'}),
+            'event_theme': forms.TextInput(attrs={'class':'form-control'}),
         }
     # name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Name'}))
     # phone = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Phone'}))
@@ -92,18 +117,35 @@ class EventManagementForm(forms.ModelForm):
 
     class Meta:
         model = EventBook
-        fields = ('full_name', 'email', 'phone')
+        fields = ('full_name', 'email', 'phone','event_date','event_time','event_address','time_of_arrival','food_served','estimated_no_of_guest','event_name','event_theme')
+
 
         labels= {
             'full_name':'Full Name:',
             'phone':'Phone:',
             'email':'Email:',
+            'event_date':'Event Date:',
+            'event_time':'Event Time:',
+            'event_address': 'Event Address:',
+            'time_of_arrival': 'Time of Arrival:',
+            'food_served': 'Time the Food will be served:',
+            'estimated_no_of_guest': 'Estimated No. of Guests:',
+            'event_name': 'Event Name:',
+            'event_theme': 'Event Theme:',
         }
 
         widgets = {
             'full_name': forms.TextInput(attrs={'class':'form-control','placeholder':'John Doe'}),
             'phone': forms.NumberInput(attrs={'class':'form-control','placeholder':'Phone'}),
             'email': forms.EmailInput(attrs={'class':'form-control','placeholder':'example@example.com'}),
+            'event_date': DateInput(attrs={'class':'form-control'}),
+            'event_time': TimeInput(attrs={'class':'form-control'}),
+            'event_address': forms.TextInput(attrs={'class':'form-control','placeholder':'Address'}),
+            'time_of_arrival': TimeInput(attrs={'class':'form-control'}),
+            'food_served': TimeInput(attrs={'class':'form-control'}),
+            'estimated_no_of_guest': forms.NumberInput(attrs={'class':'form-control','placeholder':'No.of Guests'}),
+            'event_name': forms.TextInput(attrs={'class':'form-control'}),
+            'event_theme': forms.TextInput(attrs={'class':'form-control'}),
         }
 
 # class CheckoutForm(forms.ModelForm):

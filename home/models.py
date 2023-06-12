@@ -71,6 +71,7 @@ class Review(models.Model):
     email = models.EmailField(max_length=150, blank=True)
     message = models.TextField()
     rate = models.CharField(max_length=100, choices=RATING)
+    status = models.CharField(max_length=100, choices=STATUS, blank=True, null=True)
     date_field = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -81,6 +82,14 @@ class CateringBook(models.Model):
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=150)
+    event_date = models.DateField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    event_time = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    event_address = models.CharField(max_length=150,blank=True)
+    time_of_arrival = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    food_served = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    estimated_no_of_guest = models.CharField(max_length=100,blank=True)
+    event_name = models.CharField(max_length=100,blank=True)
+    event_theme = models.CharField(max_length=100,blank=True)
     date_field = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
@@ -92,6 +101,14 @@ class EventBook(models.Model):
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=150)
+    event_date = models.DateField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    event_time = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    event_address = models.CharField(max_length=150,blank=True)
+    time_of_arrival = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    food_served = models.TimeField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    estimated_no_of_guest = models.CharField(max_length=100,blank=True)
+    event_name = models.CharField(max_length=100,blank=True)
+    event_theme = models.CharField(max_length=100,blank=True)
     date_field = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
@@ -107,7 +124,7 @@ class TableBookForm(models.Model):
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    zip = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=50)
     date_field = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -135,13 +152,12 @@ class Gallery(models.Model):
     
 
 class PlacesNearby(models.Model):
-    pass
-    # title = models.CharField(max_length=100)
-    # image = models.ImageField(upload_to='media/gallery')
-    # date_field = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    title = models.CharField(max_length=100,blank=True)
+    image = models.ImageField(upload_to='media/gallery', blank=True)
+    date_field = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
-    # def __str__(self):
-    #     return self.title
+    def __str__(self):
+        return self.title
 
 
 class Cart(models.Model):
